@@ -10,7 +10,7 @@ public class AddressBook extends AbstractTableModel {
     public Person[] getPersons() {
         return persons.toArray(new Person[persons.size()]);
     }
-
+//test comment
   
     public void add(Person p) {
         int newIndex = persons.size();
