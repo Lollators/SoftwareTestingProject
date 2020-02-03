@@ -1,5 +1,4 @@
-import AddressBook.Person;
-import com.sun.istack.internal.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
