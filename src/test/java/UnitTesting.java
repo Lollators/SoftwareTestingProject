@@ -342,4 +342,20 @@ class UnitTesting {
 
         assertEquals(null, pd.getPerson());
     }
+
+    @DisplayName("Test PersonDialog")
+    @Test
+    void testPersonDialog_getPerson_emptyFirstName(){
+        PersonDialog pd = new PersonDialog(new Frame(), testPerson);
+        assertEquals(testPerson.getFirstName(), pd.getPerson().getFirstName());
+    }
+    @Test
+    @DisplayName("Test the AddressBookGUI button actions")
+    void testActionListener() {
+        AddressBookGUI gui = new AddressBookGUI(testBookController, testBook);
+        JFileChooser fc = mock(JFileChooser.class);
+        when(fc.showOpenDialog(gui)).thenReturn(JFileChooser.ABORT);
+        gui.setJfc(fc);
+        gui.getOpenItem().doClick();
+    }
 }
