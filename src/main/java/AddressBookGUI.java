@@ -17,6 +17,12 @@ public class AddressBookGUI extends JFrame {
         gui.setVisible(true);
     }
 
+    private static void createAndShowGUI(AddressBook addressBook) {
+        AddressBookController controller = new AddressBookController(addressBook);
+        AddressBookGUI gui = new AddressBookGUI(controller, addressBook);
+        gui.setVisible(true);
+    }
+
     public static void main(String[] args) throws ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
         SwingUtilities.invokeLater(() -> createAndShowGUI());
@@ -48,9 +54,41 @@ public class AddressBookGUI extends JFrame {
         this.jfc = jfc;
     }
 
+    public JButton getAddButton() {
+        return addButton;
+    }
+
+    public JButton getEditButton() {
+        return editButton;
+    }
+
+    public JButton getDeleteButton() {
+        return deleteButton;
+    }
+
+    public JMenuItem getNewItem() {
+        return newItem;
+    }
 
     public JMenuItem getOpenItem() {
         return openItem;
+    }
+
+
+    public JMenuItem getSaveItem() {
+        return saveItem;
+    }
+
+    public JMenuItem getSaveAsItem() {
+        return saveAsItem;
+    }
+
+    public JMenuItem getPrintItem() {
+        return printItem;
+    }
+
+    public JMenuItem getQuitItem() {
+        return quitItem;
     }
 
     public AddressBookGUI(AddressBookController controller, AddressBook addressBook) {
@@ -92,6 +130,7 @@ public class AddressBookGUI extends JFrame {
         saveAsItem.addActionListener(e ->
         {
             saveAsItemAction();
+
         });
         file.add(saveAsItem);
         file.add(new JSeparator());

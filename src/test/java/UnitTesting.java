@@ -7,6 +7,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import javax.swing.*;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import java.awt.Frame;
+import java.io.File;
+import java.io.FileNotFoundException;
+import javax.swing.JFileChooser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -257,6 +263,13 @@ class UnitTesting {
         assertDoesNotThrow(() -> testBookController.open(testFile));
     }
 
+    @DisplayName("Test the AddressBookController open function")
+    @Test
+    void testReadFile_notExisting(){
+        File testFile = new File("textFile2.java");
+        assertThrows(FileNotFoundException.class, () -> testBookController.open(testFile));
+    }
+
     @DisplayName("Test Person - Create with empty first name ")
     @Test
     void testPerson_FirstName_Empty() {
@@ -323,22 +336,28 @@ class UnitTesting {
         assertEquals("1234567890", testPerson.getPhone());
     }
 
-    @DisplayName("Test Person dialog")
+    @DisplayName("Test PersonDialog")
     @Test
-    void testPersonDialog() {
-        assertEquals("1234567890", testPerson.getPhone());
+    void testPersonDialog(){
+        assertDoesNotThrow(() -> new PersonDialog(new Frame()));
+    }
+    @DisplayName("Test PersonDialog")
+    @Test
+    void testPersonDialog_getPerson_Null(){
+        PersonDialog pd = new PersonDialog(new Frame());
+
+        assertEquals(null, pd.getPerson());
     }
 
-/*
+
+
     @Test
-    @DisplayName("Test the AddressBookGUI main function")
+    @DisplayName("Test the AddressBookGUI button actions")
     void testActionListener() {
-        JButton item = new JButton("Add...");
-        //assumes that calling the main of the function does not throw exceptions
-        Action action = item.getAction();
-        AddressBookGUI gui = new AddressBookGUI(testBookController,testBook);
-        assertDoesNotThrow(() -> gui.getOpenItem().doClick());
+        AddressBookGUI gui = new AddressBookGUI(testBookController, testBook);
+        JFileChooser fc = mock(JFileChooser.class);
+        when(fc.showOpenDialog(gui)).thenReturn(JFileChooser.ABORT);
+        gui.setJfc(fc);
+        gui.getOpenItem().doClick();
     }
-*/
-
 }

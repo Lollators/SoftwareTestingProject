@@ -3,12 +3,15 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicReference;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 
 public class PersonDialog extends JDialog {
-    public enum Result {
+    public enum Result{
         OK,
         CANCEL,
+      ;
     }
 
     private Result result;
