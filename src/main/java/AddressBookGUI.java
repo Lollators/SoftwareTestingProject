@@ -221,4 +221,9 @@ public class AddressBookGUI extends JFrame {
             }
         });
     }
+
+    public JMenuItem getOpenItem() {
+        return openItem;
+    }
+
 }
