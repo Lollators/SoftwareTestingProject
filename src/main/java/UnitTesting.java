@@ -1,15 +1,37 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class UnitTesting {
+    // an arbitrary address book used to test
+    AddressBook testBook = new AddressBook();
 
     //An arbitrary person object used to test
     Person testPerson = new Person("firstname", "lastname", "address",
-            "city", "state", "zip", "phone");
+        "city", "state", "zip", "phone");
+
+    //another arbitrary person used to test
+    Person testPerson2 = new Person("Tyler", "Marlow", "601 East Tropical Way", "Plantation", "" +
+        "Florida", "33317", "9546217953");
+
+    //this annotation is used to perform this function first
+    @BeforeEach
+    void populateBook() {
+        testBook.add(testPerson);
+        testBook.add(testPerson2);
+    }
+
+    @AfterEach
+    void cleanBook() {
+        for (int i = 0; i < testBook.getRowCount(); i++) {
+            testBook.remove(i);
+        }
+    }
 
     //test the return of the first name and last name using the toString() function for the class Person
     @Test
@@ -35,25 +57,12 @@ class UnitTesting {
         assertEquals("firstname", testPerson.getField(1));
     }
 
-    // an arbitrary address book used to test
-    AddressBook testBook = new AddressBook();
-
-    //another arbitrary person used to test
-    Person testPerson2 = new Person("Tyler", "Marlow", "601 East Tropical Way", "Plantation", "" +
-            "Florida", "33317", "9546217953");
-
-    //this annotation is used to perform this function first
-    @BeforeEach
-    void populateBook() {
-        testBook.add(testPerson2);
-    }
-
     //This test makes sure that the returning the number of rows works
     @Test
     @DisplayName("Testing row count")
     void getRowCount() {
         //checks if the values are equal
-        assertEquals(1, testBook.getRowCount(), "Testing the rows");
+        assertEquals(2, testBook.getRowCount(), "Testing the rows");
     }
 
     //This test checks the number of columns in the address book
@@ -69,7 +78,7 @@ class UnitTesting {
     @DisplayName("Testing getting value at")
     void getValueAt() {
         //checks if the values are equal
-        assertEquals("Tyler", testBook.getValueAt(0, 1));
+        assertEquals("Tyler", testBook.getValueAt(1, 1));
     }
 
     @Test
@@ -86,26 +95,15 @@ class UnitTesting {
         //removes person at specified index
         testBook.remove(0);
         //checks if the values are equal
-        assertEquals(0, 0, "Testing removing the person");
+        assertEquals(1, testBook.getRowCount(), "Testing removing the person");
     }
-
-    //arbitrary address book object
-    AddressBook myAddressBook = new AddressBook();
-
-    //more arbitrary people
-    Person TestPerson = new Person("Jordan", "Sasek", "2253 Carnaby Ct", "Lehigh Acres ", "Florida", "33973", "9414563576");
-    Person TestPerson1 = new Person("Matthew", "Williams", "3162 Cordova Ter.", "Nort Port", "Florida", "34291", "9414563577");
 
     //This test gets the number of rows in the address book gui
     @Test
     @DisplayName("Test the Row Count")
     public void getRowCountTest() {
-        //adds people to the address book
-        myAddressBook.add(TestPerson);
-        myAddressBook.add(TestPerson1);
-
         //checks if the values are equal
-        assertEquals(2, myAddressBook.getRowCount());
+        assertEquals(2, testBook.getRowCount());
     }
 
     //return the expected number of columns given 7 attributes
@@ -113,7 +111,7 @@ class UnitTesting {
     @DisplayName("Test the Column Count")
     public void getColumnCountTest() {
         //checks if the values are equal
-        assertEquals(7, TestPerson.fields.length);
+        assertEquals(7, testBook.getColumnCount());
     }
 
     @DisplayName("Test Person - Create with null first name ")
@@ -129,4 +127,9 @@ class UnitTesting {
         assertThrows(IllegalArgumentException.class, () -> new Person("firstname", null, "address",
             "city", "state", "zip", "phone"));
     }
+
+
+
+
+
 }

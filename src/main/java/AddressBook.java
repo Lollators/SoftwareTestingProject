@@ -29,12 +29,10 @@ public class AddressBook extends AbstractTableModel {
         fireTableRowsUpdated(index, index);
     }
 
-  
     public void remove(int index) {
         persons.remove(index);
         fireTableRowsDeleted(index, index);
     }
-
    
     public Person get(int index) {
         return persons.get(index);
