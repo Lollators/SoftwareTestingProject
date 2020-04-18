@@ -1,10 +1,12 @@
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import java.awt.Frame;
 import java.io.File;
 import java.io.FileNotFoundException;
-import javax.swing.Action;
-import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,24 +45,6 @@ class UnitTesting {
         //assumes that calling the main of the function does not throw exceptions
         assertDoesNotThrow(() -> AddressBookGUI.main(null));
     }
-
-//    @Test
-//    @DisplayName("Test the AddressBookGUI button actions")
-//    void testActionListener() {
-//        JButton item = new JButton("Add...");
-//        //assumes that calling the main of the function does not throw exceptions
-//        Action action = item.getAction();
-//        AddressBookGUI gui = new AddressBookGUI(testController, testBook);
-////        when(gui.getOpenItem().act).then( null); //thenReturn(mockPerson);
-//        JFileChooser jfc =new JFileChooser();
-//        when(jfc.showDialog(gui.getOpenItem(),"test")).thenReturn(JFileChooser.APPROVE_OPTION);
-//        gui.getOpenItem().doClick();
-//
-//
-//        assertDoesNotThrow(() -> gui.getOpenItem().doClick());
-//
-//    }
-
 
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6})
@@ -218,6 +202,14 @@ class UnitTesting {
         File testFile = new File("textFile.txt");
         assertDoesNotThrow(() -> testBookController.open(testFile));
     }
+
+    @DisplayName("Test the AddressBookController open function")
+    @Test
+    void testReadFile_notExisting(){
+        File testFile = new File("textFile2.java");
+        assertThrows(FileNotFoundException.class, () -> testBookController.open(testFile));
+    }
+
     @DisplayName("Test Person - Create with empty first name ")
     @Test
     void testPerson_FirstName_Empty(){
@@ -274,22 +266,34 @@ class UnitTesting {
     void testPerson_getPhone(){
         assertEquals("1234567890", testPerson.getPhone());
     }
-    @DisplayName("Test Person dialog")
+    @DisplayName("Test PersonDialog")
     @Test
     void testPersonDialog(){
-        assertEquals("1234567890", testPerson.getPhone());
+        assertDoesNotThrow(() -> new PersonDialog(new Frame()));
     }
-
-/*
+    @DisplayName("Test PersonDialog")
     @Test
-    @DisplayName("Test the AddressBookGUI main function")
-    void testActionListener() {
-        JButton item = new JButton("Add...");
-        //assumes that calling the main of the function does not throw exceptions
-        Action action = item.getAction();
-        AddressBookGUI gui = new AddressBookGUI(testBookController,testBook);
-        assertDoesNotThrow(() -> gui.getOpenItem().doClick());
-    }
-*/
+    void testPersonDialog_getPerson_Null(){
+        PersonDialog pd = new PersonDialog(new Frame());
 
+        assertEquals(null, pd.getPerson());
+    }
+
+    @DisplayName("Test PersonDialog")
+    @Test
+    void testPersonDialog_getPerson_emptyFirstName(){
+        PersonDialog pd = new PersonDialog(new Frame(), testPerson);
+
+        assertEquals(testPerson.getFirstName(), pd.getPerson().getFirstName());
+    }
+
+    @Test
+    @DisplayName("Test the AddressBookGUI button actions")
+    void testActionListener() {
+        AddressBookGUI gui = new AddressBookGUI(testBookController, testBook);
+        JFileChooser fc = mock(JFileChooser.class);
+        when(fc.showOpenDialog(gui)).thenReturn(JFileChooser.ABORT);
+        gui.setJfc(fc);
+        gui.getOpenItem().doClick();
+    }
 }
