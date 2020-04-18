@@ -1,10 +1,11 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class Presentation2Tests {
+class UnitTesting {
 
     //An arbitrary person object used to test
     Person testPerson = new Person("firstname", "lastname", "address",
@@ -115,4 +116,17 @@ class Presentation2Tests {
         assertEquals(7, TestPerson.fields.length);
     }
 
+    @DisplayName("Test Person - Create with null first name ")
+    @Test
+    void testPerson_FirstName_Null(){
+        assertThrows(IllegalArgumentException.class, () -> new Person(null, "lastname", "address",
+            "city", "state", "zip", "phone"));
+    }
+
+    @DisplayName("Test Person - Create with null last name ")
+    @Test
+    void testPerson_LastName_Null(){
+        assertThrows(IllegalArgumentException.class, () -> new Person("firstname", null, "address",
+            "city", "state", "zip", "phone"));
+    }
 }
