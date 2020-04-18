@@ -9,7 +9,7 @@ import java.io.File;
 import java.util.regex.Pattern;
 
 public class AddressBookGUI extends JFrame {
-   
+
     private static void createAndShowGUI() {
         AddressBook addressBook = new AddressBook();
         AddressBookController controller = new AddressBookController(addressBook);
@@ -22,7 +22,7 @@ public class AddressBookGUI extends JFrame {
         SwingUtilities.invokeLater(() -> createAndShowGUI());
     }
 
-    
+
     private final AddressBookController controller;
     private final AddressBook addressBook;
     private final JTable nameList;
@@ -37,10 +37,22 @@ public class AddressBookGUI extends JFrame {
     private final JMenuItem printItem = new JMenuItem("Print", 'P');
     private final JMenuItem quitItem = new JMenuItem("Exit", 'X');
     private final JTextField searchTextField = new JTextField("");
-
+    private JFileChooser jfc;
     private File currentFile = null;
 
-   
+    public JFileChooser getJfc() {
+        return jfc;
+    }
+
+    public void setJfc(JFileChooser jfc) {
+        this.jfc = jfc;
+    }
+
+
+    public JMenuItem getOpenItem() {
+        return openItem;
+    }
+
     public AddressBookGUI(AddressBookController controller, AddressBook addressBook) {
         // Set our local variables
         this.controller = controller;
@@ -68,49 +80,18 @@ public class AddressBookGUI extends JFrame {
         file.add(newItem);
         openItem.addActionListener(e ->
         {
-            final JFileChooser jfc = new JFileChooser();
-            if (JFileChooser.APPROVE_OPTION != jfc.showOpenDialog(this)) {
-                return;
-            }
-            try {
-                controller.open(jfc.getSelectedFile());
-                currentFile = jfc.getSelectedFile();
-                saveItem.setEnabled(false);
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error loading file: " + ex.getMessage(), "Open", JOptionPane.ERROR_MESSAGE);
-            }
+          openItemAction();
         });
         file.add(openItem);
         saveItem.setEnabled(false);
         saveItem.addActionListener(e ->
         {
-            if (currentFile == null) {
-                saveAsItem.doClick();
-                return;
-            }
-            FileSystem fs = new FileSystem();
-            try {
-                controller.save(currentFile);
-                saveItem.setEnabled(false);
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(this, "Error saving the file: " + ex.getMessage(), "Save", JOptionPane.ERROR_MESSAGE);
-            }
+            saveItemAction();
         });
         file.add(saveItem);
         saveAsItem.addActionListener(e ->
         {
-            final JFileChooser jfc = new JFileChooser();
-            if (JFileChooser.APPROVE_OPTION != jfc.showSaveDialog(this)) {
-                return;
-            }
-            currentFile = jfc.getSelectedFile();
-            if (currentFile == null) {
-                return;
-            }
-            if (currentFile.exists() && JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(this, "Are you sure you want to overwrite this file?", "Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)) {
-                return;
-            }
-            saveItem.doClick();
+            saveAsItemAction();
         });
         file.add(saveAsItem);
         file.add(new JSeparator());
@@ -149,13 +130,13 @@ public class AddressBookGUI extends JFrame {
             }
 
             public void filter() {
-               
+
                 tableRowSorter.setRowFilter(RowFilter.regexFilter("(?iu)" + Pattern.quote(searchTextField.getText())));
             }
         });
         menuBar.add(searchTextField);
 
-      
+
         JPanel addEditDelPanel = new JPanel();
         addButton.setMnemonic('A');
         addButton.addActionListener(e ->
@@ -222,8 +203,51 @@ public class AddressBookGUI extends JFrame {
         });
     }
 
-    public JMenuItem getOpenItem() {
-        return openItem;
+    public void saveItemAction() {
+        if (currentFile == null) {
+            saveAsItem.doClick();
+            return;
+        }
+        FileSystem fs = new FileSystem();
+        try {
+            controller.save(currentFile);
+            saveItem.setEnabled(false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error saving the file: " + ex.getMessage(), "Save", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
+    public void saveAsItemAction() {
+        if (jfc == null)
+            jfc = new JFileChooser();
+
+        if (JFileChooser.APPROVE_OPTION != jfc.showSaveDialog(this)) {
+            return;
+        }
+        currentFile = jfc.getSelectedFile();
+        if (currentFile == null) {
+            return;
+        }
+        if (currentFile.exists() && JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(this, "Are you sure you want to overwrite this file?", "Are you sure?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)) {
+            return;
+        }
+        saveItem.doClick();
+        jfc=null;
+    }
+
+    private void openItemAction() {
+        if (jfc == null)
+            jfc = new JFileChooser();
+        if (JFileChooser.APPROVE_OPTION != jfc.showOpenDialog(this)) {
+            return;
+        }
+        try {
+            controller.open(jfc.getSelectedFile());
+            currentFile = jfc.getSelectedFile();
+            saveItem.setEnabled(false);
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error loading file: " + ex.getMessage(), "Open", JOptionPane.ERROR_MESSAGE);
+        }
+        jfc=null;
+    }
 }
