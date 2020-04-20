@@ -1,19 +1,10 @@
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.io.File;
 import java.io.FileNotFoundException;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.awt.Frame;
-
 import AddressBook.*;
 import AddressBook.Person;
-import GUI.AddressBookGUI;
-import GUI.PersonDialog;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -336,6 +327,37 @@ class UnitTesting {
     @Test
     void testPerson_getField_Invalid() {
         assertThrows(IllegalArgumentException.class, () -> testPerson.getField(7));
+    }
+
+    @DisplayName("Test Person's getLastName method")
+    @Test
+    void testPerson_getLastName(){
+        assertEquals("lastname", testPerson.getLastName());
+    }
+    @DisplayName("Test Person's getAddress method")
+    @Test
+    void testPerson_getAddress(){
+        assertEquals("address", testPerson.getAddress());
+    }
+    @DisplayName("Test Person's getCity method")
+    @Test
+    void testPerson_getCity(){
+        assertEquals("city", testPerson.getCity());
+    }
+    @DisplayName("Test Person's getState method")
+    @Test
+    void testPerson_getState(){
+        assertEquals("state", testPerson.getState());
+    }
+    @DisplayName("Test Person's getZip method")
+    @Test
+    void testPerson_getZip(){
+        assertEquals("zip", testPerson.getZip());
+    }
+    @DisplayName("Test Person's getPhone method")
+    @Test
+    void testPerson_getPhone(){
+        assertEquals("1234567890", testPerson.getPhone());
     }
 
 
