@@ -1,3 +1,5 @@
+package AddressBook;
+
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +21,10 @@ public class AddressBook extends AbstractTableModel {
     }
 
     /**
-     * Sets the person at the given index to the Person specified.
+     * Sets the person at the given index to the AddressBook.Person specified.
      *
      * @param index  Index to update.
-     * @param person Person to replace the item with.
+     * @param person AddressBook.Person to replace the item with.
      */
     public void set(int index, Person person) {
         persons.set(index, person);

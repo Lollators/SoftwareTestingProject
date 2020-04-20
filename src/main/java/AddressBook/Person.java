@@ -1,3 +1,5 @@
+package AddressBook;
+
 import java.util.regex.Pattern;
 
 
@@ -63,18 +65,18 @@ public class Person {
     }
 
     /**
-     * Returns this Person's ZIP code.
+     * Returns this AddressBook.Person's ZIP code.
      *
-     * @return ZIP code of this Person
+     * @return ZIP code of this AddressBook.Person
      */
     public String getZip() {
         return zip;
     }
 
     /**
-     * Returns this Person's telephone number.
+     * Returns this AddressBook.Person's telephone number.
      *
-     * @return Telephone number of this Person.
+     * @return Telephone number of this AddressBook.Person.
      */
     public String getPhone() {
         return phone;

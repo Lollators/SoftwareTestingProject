@@ -1,3 +1,6 @@
+package GUI;
+
+import AddressBook.*;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;

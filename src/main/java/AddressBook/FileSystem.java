@@ -1,3 +1,5 @@
+package AddressBook;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
@@ -12,9 +14,9 @@ public class FileSystem {
        
         Connection connection = DriverManager.getConnection("jdbc:sqlite:" + file.getAbsolutePath());
         ResultSet rs = connection.createStatement().executeQuery("SELECT lastName, firstName, address, city, state, zip, phone FROM persons");
-        // Clear the current AddressBook contents
+        // Clear the current AddressBook.AddressBook contents
         addressBook.clear();
-        // Iterate through all the records, adding them to the AddressBook
+        // Iterate through all the records, adding them to the AddressBook.AddressBook
         while (rs.next()) {
             Person p = new Person(
                     rs.getString("firstName"),

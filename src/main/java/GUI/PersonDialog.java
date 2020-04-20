@@ -1,10 +1,11 @@
+package GUI;
+
+import AddressBook.*;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.atomic.AtomicReference;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 
 public class PersonDialog extends JDialog {
@@ -105,7 +106,7 @@ public class PersonDialog extends JDialog {
         getContentPane().add(p.get(), BorderLayout.CENTER);
         getContentPane().add(buttons, BorderLayout.PAGE_END);
         pack();
-        setTitle("Person Information");
+        setTitle("AddressBook.Person Information");
         setModalityType(ModalityType.DOCUMENT_MODAL);
         setLocation((parent.getWidth() - getWidth()) / 2, (parent.getHeight() - getHeight()) / 2);
     }

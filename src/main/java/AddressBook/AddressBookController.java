@@ -1,10 +1,9 @@
+package AddressBook;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
-/**
- * Created by 
- */
 public class AddressBookController {
     AddressBook addressBook;
 
