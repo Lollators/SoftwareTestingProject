@@ -178,7 +178,6 @@ public class AddressBookGUI extends JFrame {
             if (selectedRow == -1) {
                 return;
             }
-            // TODO: This doesn't work yet
             int index = nameList.convertRowIndexToModel(selectedRow);
             Person oldPerson = controller.get(index);
             PersonDialog dialog = new PersonDialog(this, oldPerson);

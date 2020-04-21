@@ -26,6 +26,29 @@ public class Person {
 
  
     public Person(String firstName, String lastName, String address, String city, String state, String zip, String phone) {
+        /*
+            Phone patterns supported:
+
+            EX:
+                (123) 456 7899
+                (123).456.7899
+                (123)-456-7899
+                123-456-7899
+                123 456 7899
+                1234567899
+         */
+        String phonePattern = "\\(?([0-9]{3})\\)?([ .-]?)([0-9]{3})\\2([0-9]{4})";
+
+        /*
+            Zipcode pattern supports 5 digits zipcode or 5 digits + 4
+
+            EX:
+                33965
+                33965-1234
+
+         */
+        String zipcodePattern = "^\\d{5}(-\\d{4})?$";
+
         if (firstName == null || firstName.isEmpty())
             throw new IllegalArgumentException("First name cannot be empty");
         if (lastName == null || lastName.isEmpty())
@@ -35,8 +58,19 @@ public class Person {
         this.address = address;
         this.city = city;
         this.state = state;
-        this.zip = zip;
-        this.phone = phone;
+
+        if (zip.matches(zipcodePattern))
+            this.zip = zip;
+        else {
+            this.zip = "";
+            throw new IllegalArgumentException("Invalid zipcode entered");
+        }
+        if (phone.matches(phonePattern))
+            this.phone = phone;
+        else {
+            this.phone = "";
+            throw new IllegalArgumentException("Invalid phone number entered");
+        }
     }
 
 
