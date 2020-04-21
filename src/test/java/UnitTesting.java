@@ -5,11 +5,20 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import AddressBook.*;
 import AddressBook.Person;
+import GUI.AddressBookGUI;
+import org.assertj.swing.core.matcher.JButtonMatcher;
+import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
+import org.assertj.swing.edt.GuiActionRunner;
+import org.assertj.swing.fixture.DialogFixture;
+import org.assertj.swing.fixture.FrameFixture;
+import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
+import org.junit.Rule;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.rules.TemporaryFolder;
 
-class UnitTesting {
+class UnitTesting extends AssertJSwingJUnitTestCase {
     // an arbitrary address book used to test
     AddressBook testBook = new AddressBook();
     AddressBookController testBookController = new AddressBookController(testBook);
@@ -21,15 +30,23 @@ class UnitTesting {
             "601 East Tropical Way", "Plantation", "" +
             "Florida", "33317", "9546217953");
 
-
     File testFile = new File("testFile.txt");
+    public static FrameFixture window = null;
 
+    @Override
+    protected void onSetUp() {
+        FailOnThreadViolationRepaintManager.install();
+    }
 
     //this annotation is used to perform this function first
     @BeforeEach
-    void populateBook() {
+    void initializeBook() {
         testBook.add(testPerson);
         testBook.add(testPerson2);
+        AddressBookGUI gui= GuiActionRunner
+            .execute(() -> new AddressBookGUI(testBookController,testBook));
+        window = new FrameFixture(gui);
+        window.show();
     }
 
     @AfterEach
@@ -37,7 +54,31 @@ class UnitTesting {
         for (int i = 0; i < testBook.getRowCount(); i++) {
             testBook.remove(i);
         }
+        window.cleanUp();
     }
+
+    @Test
+    @DisplayName("Edit Person GUI Test")
+    public void testEditPersonGUI() {
+        window.table().cell("Tyler").click();
+        window.button("edit").click();
+
+        DialogFixture dialog = window.dialog();
+        dialog.textBox("firstName").setText("Luca");
+        dialog.button(JButtonMatcher.withName("ok")).click();
+
+        assertEquals("Luca", testBookController.get(1).getFirstName());
+    }
+
+    @Test
+    @DisplayName("Delete Person GUI Test")
+    public void testDeletePersonGUI() {
+        window.table().cell("Tyler").click();
+        window.button("delete").click();
+
+        assertEquals(1, testBook.getRowCount());
+    }
+
 
 //    //test the Main function of the GUI.AddressBookGUI class
 //    @Test
@@ -279,21 +320,19 @@ class UnitTesting {
     @DisplayName("Test the AddressBook.AddressBookController save function")
     @Test
     void testAddressBookControllerSaveFile() {
-        File testFile = new File("textFile.txt");
         assertDoesNotThrow(() -> testBookController.save(testFile));
     }
 
     @DisplayName("Test the AddressBook.AddressBookController open function")
     @Test
     void testReadFile() {
-        File testFile = new File("textFile.txt");
         assertDoesNotThrow(() -> testBookController.open(testFile));
     }
 
     @DisplayName("Test the AddressBook.AddressBookController open function")
     @Test
     void testReadFile_notExisting() {
-        File testFile = new File("textFile2.java");
+        File testFile = new File("testFile2.java");
         assertThrows(FileNotFoundException.class, () -> testBookController.open(testFile));
     }
 
@@ -373,8 +412,6 @@ class UnitTesting {
     void testPerson_getPhone(){
         assertEquals("1234567890", testPerson.getPhone());
     }
-
-
 
 //    @DisplayName("Test GUI.PersonDialog")
 //    @Test

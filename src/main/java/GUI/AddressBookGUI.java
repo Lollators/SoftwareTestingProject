@@ -60,6 +60,7 @@ public class AddressBookGUI extends JFrame {
 
         JMenuBar menuBar = new JMenuBar();
         JMenu file = new JMenu("File");
+        file.setName("file");
         file.setMnemonic('F');
         newItem.addActionListener(e ->
         {
@@ -85,6 +86,7 @@ public class AddressBookGUI extends JFrame {
             }
         });
         file.add(openItem);
+        openItem.setName("open");
         saveItem.setEnabled(false);
         saveItem.addActionListener(e ->
         {
@@ -173,6 +175,7 @@ public class AddressBookGUI extends JFrame {
         });
         addEditDelPanel.add(addButton);
         editButton.setMnemonic('E');
+        editButton.setName("edit");
         editButton.addActionListener(e -> {
             int selectedRow = nameList.getSelectedRow();
             if (selectedRow == -1) {
@@ -189,6 +192,7 @@ public class AddressBookGUI extends JFrame {
         });
         addEditDelPanel.add(editButton);
         deleteButton.setMnemonic('D');
+        deleteButton.setName("delete");
         deleteButton.addActionListener(e -> {
             int selectedRow = nameList.getSelectedRow();
             if (selectedRow == -1) {

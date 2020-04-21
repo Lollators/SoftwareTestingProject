@@ -134,7 +134,6 @@ public class Person {
                 || p.matcher(phone).find();
     }
 
-   
     public String getField(int field) {
         switch (field) {
             case 0:
