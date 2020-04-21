@@ -79,6 +79,14 @@ class UnitTesting extends AssertJSwingJUnitTestCase {
         assertEquals(1, testBook.getRowCount());
     }
 
+    @Test
+    @DisplayName("Add Person GUI Test")
+    public void testAddPersonGUI() {
+        window.button("add").click();
+        DialogFixture dialog = window.dialog();
+        dialog.button(JButtonMatcher.withName("cancel"));
+    }
+
 
 //    //test the Main function of the GUI.AddressBookGUI class
 //    @Test

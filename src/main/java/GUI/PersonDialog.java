@@ -102,6 +102,7 @@ public class PersonDialog extends JDialog {
         buttons.add(okButton);
         JButton cancelButton = new JButton("Cancel");
         cancelButton.setMnemonic('C');
+        cancelButton.setName("cancel");
         cancelButton.addActionListener(e ->
         {
             result = Result.CANCEL;

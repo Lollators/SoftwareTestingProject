@@ -164,6 +164,7 @@ public class AddressBookGUI extends JFrame {
 
         JPanel addEditDelPanel = new JPanel();
         addButton.setMnemonic('A');
+        addButton.setName("add");
         addButton.addActionListener(e ->
         {
             PersonDialog dialog = new PersonDialog(this);
