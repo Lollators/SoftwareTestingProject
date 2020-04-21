@@ -15,7 +15,7 @@ class UnitTesting {
     AddressBookController testBookController = new AddressBookController(testBook);
     //An arbitrary person object used to test
     Person testPerson = new Person("firstname", "lastname", "address",
-            "city", "state", "zip", "1234567890");
+            "city", "state", "33965", "1234567890");
     //another arbitrary person used to test
     Person testPerson2 = new Person("Tyler", "Marlow",
             "601 East Tropical Way", "Plantation", "" +
@@ -256,9 +256,7 @@ class UnitTesting {
     @DisplayName("Test the AddressBook.AddressBookController add function ")
     void testAddressBookControllerAdd() {
         //creates controller with specified book
-        testBookController.add(new Person("test",
-                "test", "address",
-                "city", "state", "zip", "1234567890"));
+        testBookController.add(testPerson);
         assertEquals(3, testBook.getRowCount());
     }
 
@@ -315,6 +313,22 @@ class UnitTesting {
                 "city", "state", "zip", "1234567890"));
     }
 
+    @DisplayName("Test AddressBook.Person - Create with invalid zipcode")
+    @Test
+    void testPerson_InvalidZip() {
+        assertThrows(IllegalArgumentException.class, () -> new Person("firstname",
+            "lastname", "address",
+            "city", "state", "zip", "1234567890"));
+    }
+
+    @DisplayName("Test AddressBook.Person - Create with invalid phone number")
+    @Test
+    void testPerson_InvalidPhone() {
+        assertThrows(IllegalArgumentException.class, () -> new Person("firstname",
+            "lastname", "address",
+            "city", "state", "33965", "phone"));
+    }
+
     @DisplayName("Test person contains method")
     @Test
     void testPerson_contains() {
@@ -352,13 +366,14 @@ class UnitTesting {
     @DisplayName("Test Person's getZip method")
     @Test
     void testPerson_getZip(){
-        assertEquals("zip", testPerson.getZip());
+        assertEquals("33965", testPerson.getZip());
     }
     @DisplayName("Test Person's getPhone method")
     @Test
     void testPerson_getPhone(){
         assertEquals("1234567890", testPerson.getPhone());
     }
+
 
 
 //    @DisplayName("Test GUI.PersonDialog")
