@@ -19,41 +19,48 @@ import static org.mockito.Mockito.when;
 
 class UnitTesting {
     // an arbitrary address book used to test
-    AddressBook testBook = new AddressBook();
-    AddressBookController testBookController = new AddressBookController(testBook);
+    AddressBook testBook;
+    AddressBookController testBookController;
     //An arbitrary person object used to test
     Person testPerson = new Person("firstname", "lastname", "address",
             "city", "state", "33965", "1234567890");
     //another arbitrary person used to test
-    File testFile = new File("testFile.txt");
+    File testFile;
     public static FrameFixture window = null;
-    AddressBookController guiAddressBookController;
-    AddressBook guiAddressBook;
+
+    //number of people in address book in the beginning
+    int initialCount;
 
     //this annotation is used to perform this function first
     @BeforeEach
     void initializeBook() {
+        //initializes addressBook
+        testBook= new AddressBook();
         testBook.add(testPerson);
-        AddressBookGUI gui = GuiActionRunner
-                .execute(() -> new AddressBookGUI(new AddressBookController(testBook), testBook));
+
+        //gets address book size at start of test
+        initialCount =testBook.getRowCount();
+
+        //initializes the controller
+        testBookController = new AddressBookController(testBook);
+
+        //initializes the GUI and runs it in a window
+        AddressBookGUI gui= GuiActionRunner
+                .execute(() -> new AddressBookGUI(new AddressBookController(testBook),testBook));
+
+        //assigns GUI window to a variable to allow for testing
         window = new FrameFixture(gui);
         window.show();
-        guiAddressBookController = ((AddressBookGUI) window.target()).getAddressBookController();
-        guiAddressBook = guiAddressBookController.getModel();
     }
 
     @AfterEach
     void cleanBook() {
-        for (int i = 0; i < testBook.getRowCount(); i++) {
-            testBook.remove(i);
-        }
         window.cleanUp();
     }
 
     @Test
     @DisplayName("Test AddressBookGUI add function - Unit test")
     public void testAddressBookGUI_Add_Unit() {
-        int tableRowCount = window.table().rowCount();
         window.button("add").click();
         DialogFixture dialog = window.dialog();
         dialog.textBox("firstName").setText("Jordin");
@@ -64,13 +71,12 @@ class UnitTesting {
         dialog.textBox("zip").setText("34112");
         dialog.textBox("phone").setText("2395721111");
         dialog.button(JButtonMatcher.withName("ok")).click();
-        window.table().requireRowCount(tableRowCount + 1);
+        window.table().requireRowCount(initialCount + 1);
     }
 
     @Test
     @DisplayName("Test putting in an empty last name in theAddressBookGUI add dialog - Unit test")
     public void testAddressBookGUI_Empty_Last_Add_Unit() {
-        int tableRowCount = window.table().rowCount();
         window.button("add").click();
         DialogFixture dialog = window.dialog();
         dialog.textBox("firstName").setText("Jordin");
@@ -81,13 +87,12 @@ class UnitTesting {
         dialog.textBox("zip").setText("34112");
         dialog.textBox("phone").setText("2395721111");
         dialog.button(JButtonMatcher.withName("ok")).click();
-        window.table().requireRowCount(tableRowCount);
+        window.table().requireRowCount(initialCount);
     }
 
     @Test
     @DisplayName("Test putting in an empty first name in theAddressBookGUI add dialog - Unit test")
     public void testAddressBookGUI_Empty_First_Add_Unit() {
-        int tableRowCount = window.table().rowCount();
         window.button("add").click();
         DialogFixture dialog = window.dialog();
         dialog.textBox("firstName").setText("");
@@ -98,47 +103,13 @@ class UnitTesting {
         dialog.textBox("zip").setText("34112");
         dialog.textBox("phone").setText("2395721111");
         dialog.button(JButtonMatcher.withName("ok")).click();
-        window.table().requireRowCount(tableRowCount);
+        window.table().requireRowCount(initialCount);
     }
 
-    @Test
-    @DisplayName("Test putting in a null first name in theAddressBookGUI add dialog - Unit test")
-    public void testAddressBookGUI_Null_First_Add_Unit() {
-        int tableRowCount = window.table().rowCount();
-        window.button("add").click();
-        DialogFixture dialog = window.dialog();
-        dialog.textBox("firstName").setText(null);
-        dialog.textBox("lastName").setText("Medina");
-        dialog.textBox("address").setText("525 street drive");
-        dialog.textBox("city").setText("Naples");
-        dialog.textBox("state").setText("Florida");
-        dialog.textBox("zip").setText("34112");
-        dialog.textBox("phone").setText("2395721111");
-        dialog.button(JButtonMatcher.withName("cancel")).click();
-        window.table().requireRowCount(tableRowCount);
-    }
-
-    @Test
-    @DisplayName("Test puttin in a null last name in theAddressBookGUI add dialog - Unit test")
-    public void testAddressBookGUI_Null_Last_Add_Unit() {
-        int tableRowCount = window.table().rowCount();
-        window.button("add").click();
-        DialogFixture dialog = window.dialog();
-        dialog.textBox("firstName").setText("Jordin");
-        dialog.textBox("lastName").setText(null);
-        dialog.textBox("address").setText("525 street drive");
-        dialog.textBox("city").setText("Naples");
-        dialog.textBox("state").setText("Florida");
-        dialog.textBox("zip").setText("34112");
-        dialog.textBox("phone").setText("2395721111");
-        dialog.button(JButtonMatcher.withName("ok")).click();
-        window.table().requireRowCount(tableRowCount);
-    }
 
     @Test
     @DisplayName("Test putting in an empty last name in theAddressBookGUI add dialog - Unit test")
     public void testAddressBookGUI_wrong_zip() {
-        int tableRowCount = window.table().rowCount();
         window.button("add").click();
         DialogFixture dialog = window.dialog();
         dialog.textBox("firstName").setText("Jordin");
@@ -149,13 +120,12 @@ class UnitTesting {
         dialog.textBox("zip").setText("zip");
         dialog.textBox("phone").setText("2395721111");
         dialog.button(JButtonMatcher.withName("ok")).click();
-        window.table().requireRowCount(tableRowCount);
+        window.table().requireRowCount(initialCount);
     }
 
     @Test
     @DisplayName("Test putting in an empty last name in theAddressBookGUI add dialog - Unit test")
     public void testAddressBookGUI_wrong_phone() {
-        int tableRowCount = window.table().rowCount();
         window.button("add").click();
         DialogFixture dialog = window.dialog();
         dialog.textBox("firstName").setText("Jordin");
@@ -166,13 +136,12 @@ class UnitTesting {
         dialog.textBox("zip").setText("34112");
         dialog.textBox("phone").setText("test");
         dialog.button(JButtonMatcher.withName("ok")).click();
-        window.table().requireRowCount(tableRowCount);
+        window.table().requireRowCount(initialCount);
     }
 
     @Test
     @DisplayName("Test canceling out of AddressBookGUI add dialog - Unit test")
     public void testAddressBookGUI_Cancel_Add_Unit() {
-        int tableRowCount = window.table().rowCount();
         window.button("add").click();
         DialogFixture dialog = window.dialog();
         assertDoesNotThrow(() -> dialog.button(JButtonMatcher.withName("cancel")).click());
@@ -181,10 +150,9 @@ class UnitTesting {
     @Test
     @DisplayName("Test AddressBookGUI remove function - Unit test")
     public void testAddressBookGUI_Remove_Unit() {
-        int tableRowCount = window.table().rowCount();
         window.table().cell("firstname").click();
         window.button("delete").click();
-        window.table().requireRowCount(tableRowCount - 1);
+        window.table().requireRowCount(initialCount - 1);
     }
 
 
@@ -288,12 +256,11 @@ class UnitTesting {
     @Test
     @DisplayName("Test the AddressBook add function ")
     void testAddressBookAdd() {
-        int count = testBook.getRowCount();
         Person testPerson2 = new Person("Tyler", "Marlow",
                 "601 East Tropical Way", "Plantation", "" +
                 "Florida", "33317", "9546217953");
         testBook.add(testPerson2);
-        assertEquals(count + 1, testBook.getRowCount());
+        assertEquals(initialCount + 1, testBook.getRowCount());
     }
 
     //This test gets the number of rows in the address book gui
@@ -501,6 +468,5 @@ class UnitTesting {
 
         assertDoesNotThrow(() -> testBook.clear());
     }
-
 
 }
