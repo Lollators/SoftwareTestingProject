@@ -12,7 +12,7 @@ public class PersonDialog extends JDialog {
     public enum Result{
         OK,
         CANCEL,
-      ;
+        ;
     }
 
     private Result result;
@@ -24,12 +24,12 @@ public class PersonDialog extends JDialog {
     private JTextField zip;
     private JTextField phone;
 
-  
+
     public PersonDialog(Frame parent) {
-        
+
         super(parent);
 
-        
+
         JLabel l;
         AtomicReference<JPanel> p = new AtomicReference<>(new JPanel(new SpringLayout()));
 
@@ -40,7 +40,7 @@ public class PersonDialog extends JDialog {
         l.setLabelFor(firstName);
         p.get().add(firstName);
 
-      
+
         l = new JLabel("Last name:", JLabel.TRAILING);
         p.get().add(l);
         lastName = new JTextField(20);
@@ -48,7 +48,7 @@ public class PersonDialog extends JDialog {
         l.setLabelFor(lastName);
         p.get().add(lastName);
 
-  
+
         l = new JLabel("Address:", JLabel.TRAILING);
         p.get().add(l);
         address = new JTextField(20);
@@ -56,7 +56,7 @@ public class PersonDialog extends JDialog {
         l.setLabelFor(address);
         p.get().add(address);
 
-     
+
         l = new JLabel("City:", JLabel.TRAILING);
         p.get().add(l);
         city = new JTextField(20);
@@ -64,7 +64,7 @@ public class PersonDialog extends JDialog {
         l.setLabelFor(city);
         p.get().add(city);
 
-       
+
         l = new JLabel("State:", JLabel.TRAILING);
         p.get().add(l);
         state = new JTextField(20);
@@ -79,7 +79,7 @@ public class PersonDialog extends JDialog {
         l.setLabelFor(zip);
         p.get().add(zip);
 
-       
+
         l = new JLabel("Telephone:", JLabel.TRAILING);
         p.get().add(l);
         phone = new JTextField(20);
@@ -119,11 +119,12 @@ public class PersonDialog extends JDialog {
         setLocation((parent.getWidth() - getWidth()) / 2, (parent.getHeight() - getHeight()) / 2);
     }
 
-  
+
     public PersonDialog(Frame parent, @Nullable Person person) {
         this(parent);
         if (person == null)
             return;
+
         firstName.setText(person.getFirstName());
         lastName.setText(person.getLastName());
         address.setText(person.getAddress());
@@ -133,7 +134,7 @@ public class PersonDialog extends JDialog {
         phone.setText(person.getPhone());
     }
 
-    
+
     public Result showDialog() {
         // Default to CANCEL if the user closes the dialog window
         result = Result.CANCEL;
@@ -141,19 +142,55 @@ public class PersonDialog extends JDialog {
         return result;
     }
 
- 
-    public Person getPerson() {
-        if (firstName != null && lastName != null && !firstName.getText().isEmpty() && !lastName.getText().isEmpty()) {
-            return new Person(firstName.getText(),
-                    lastName.getText(),
-                    address.getText(),
-                    city.getText(),
-                    state.getText(),
-                    zip.getText(),
-                    phone.getText());
-        } else {
-            return null;
 
+    public Person getPerson() {
+        /*
+            Phone patterns supported:
+
+            EX:
+                (123) 456 7899
+                (123).456.7899
+                (123)-456-7899
+                123-456-7899
+                123 456 7899
+                1234567899
+         */
+        String phonePattern = "\\(?([0-9]{3})\\)?([ .-]?)([0-9]{3})\\2([0-9]{4})";
+
+        /*
+            Zipcode pattern supports 5 digits zipcode or 5 digits + 4
+
+            EX:
+                33965
+                33965-1234
+
+         */
+        String zipcodePattern = "^\\d{5}(-\\d{4})?$";
+
+
+        if (firstName != null && lastName != null && !firstName.getText().isEmpty() && !lastName.getText().isEmpty() && zip.getText().matches(zipcodePattern) && phone.getText().matches(phonePattern)) {
+            return new Person(firstName.getText(),
+                lastName.getText(),
+                address.getText(),
+                city.getText(),
+                state.getText(),
+                zip.getText(),
+                phone.getText());
+        } else {
+            if(firstName.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "First name cannot be empty!", "Error!",
+                    JOptionPane.ERROR_MESSAGE);
+            } else if(lastName.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "Last name cannot be empty!", "Error!",
+                    JOptionPane.ERROR_MESSAGE);
+            } else if(!phone.getText().matches(phonePattern)){
+                JOptionPane.showMessageDialog(null, "Enter a valid phone number!", "Error!",
+                    JOptionPane.ERROR_MESSAGE);
+            } else if(!zip.getText().matches(zipcodePattern)) {
+                JOptionPane.showMessageDialog(null, "Enter a valid zipcode number!", "Error!",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+            return null;
         }
     }
 }

@@ -136,6 +136,40 @@ class UnitTesting {
     }
 
     @Test
+    @DisplayName("Test putting in an empty last name in theAddressBookGUI add dialog - Unit test")
+    public void testAddressBookGUI_wrong_zip() {
+        int tableRowCount = window.table().rowCount();
+        window.button("add").click();
+        DialogFixture dialog = window.dialog();
+        dialog.textBox("firstName").setText("Jordin");
+        dialog.textBox("lastName").setText("Medina");
+        dialog.textBox("address").setText("525 street drive");
+        dialog.textBox("city").setText("Naples");
+        dialog.textBox("state").setText("Florida");
+        dialog.textBox("zip").setText("zip");
+        dialog.textBox("phone").setText("2395721111");
+        dialog.button(JButtonMatcher.withName("ok")).click();
+        window.table().requireRowCount(tableRowCount);
+    }
+
+    @Test
+    @DisplayName("Test putting in an empty last name in theAddressBookGUI add dialog - Unit test")
+    public void testAddressBookGUI_wrong_phone() {
+        int tableRowCount = window.table().rowCount();
+        window.button("add").click();
+        DialogFixture dialog = window.dialog();
+        dialog.textBox("firstName").setText("Jordin");
+        dialog.textBox("lastName").setText("Medina");
+        dialog.textBox("address").setText("525 street drive");
+        dialog.textBox("city").setText("Naples");
+        dialog.textBox("state").setText("Florida");
+        dialog.textBox("zip").setText("34112");
+        dialog.textBox("phone").setText("test");
+        dialog.button(JButtonMatcher.withName("ok")).click();
+        window.table().requireRowCount(tableRowCount);
+    }
+
+    @Test
     @DisplayName("Test canceling out of AddressBookGUI add dialog - Unit test")
     public void testAddressBookGUI_Cancel_Add_Unit() {
         int tableRowCount = window.table().rowCount();
@@ -153,16 +187,6 @@ class UnitTesting {
         window.table().requireRowCount(tableRowCount - 1);
     }
 
-//    @Test
-//    @DisplayName("Test AddressBookGUI edit function with null first name - Unit test")
-//    public void testAddressBookGUI_Edit_Null_First_Name_Unit() {
-//        window.table().cell("firstname").click();
-//        window.button("edit").click();
-//        DialogFixture dialog = window.dialog();
-//        dialog.textBox("firstName").setText(null);
-//        dialog.button(JButtonMatcher.withName("ok")).click();
-//        window.table().requireContents(new String[][]{{"lastname", null, "address", "city", "state", "33965", "1234567890"}});
-//    }
 
     @Test
     @DisplayName("Test AddressBookGUI edit function - Unit test")
