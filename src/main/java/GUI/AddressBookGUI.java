@@ -105,6 +105,8 @@ public class AddressBookGUI extends JFrame {
             }
         });
         file.add(saveItem);
+        saveItem.setName("save");
+        saveAsItem.setName("saveAs");
         saveAsItem.addActionListener(e ->
         {
             final JFileChooser jfc = new JFileChooser();

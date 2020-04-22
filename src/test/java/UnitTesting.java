@@ -43,17 +43,11 @@ class UnitTesting   {
         }
         window.cleanUp();
     }
+
     @Test
-    @DisplayName("Delete Person GUI Test")
-    public void testDeletePersonGUI() {
-        window.table().cell("firstname").click();
-        window.button("delete").click();
-        assertEquals(0, testBook.getRowCount());
-    }
-    @Test
-    @DisplayName("Add Person GUI Test")
-    public void testAddPersonGUI() {
-        int initialCount=guiAddressBook.getRowCount();
+    @DisplayName("Test AddressBookGUI add function - Unit test")
+    public void testAddressBookGUI_Add_Unit() {
+        int tableRowCount = window.table().rowCount();
         window.button("add").click();
         DialogFixture dialog = window.dialog();
         dialog.textBox("firstName").setText("Jordin");
@@ -64,20 +58,30 @@ class UnitTesting   {
         dialog.textBox("zip").setText("34112");
         dialog.textBox("phone").setText("2395721111");
         dialog.button(JButtonMatcher.withName("ok")).click();
-        testBook =((AddressBookGUI)window.target()).getAddressBookController().getModel();
-        assertEquals(initialCount+1, testBook.getRowCount());
+        window.table().requireRowCount(tableRowCount + 1);
     }
+
     @Test
-    @DisplayName("Edit Person GUI Test")
-    public void testEditPersonGUI() {
+    @DisplayName("Test AddressBookGUI remove function - Unit test")
+    public void testAddressBookGUI_Remove_Unit() {
+        int tableRowCount = window.table().rowCount();
+        window.table().cell("firstname").click();
+        window.button("delete").click();
+        window.table().requireRowCount(tableRowCount - 1);
+    }
+
+    @Test
+    @DisplayName("Test AddressBookGUI edit function - Unit test")
+    public void testAddressBookGUI_Edit_Unit() {
         window.table().cell("firstname").click();
         window.button("edit").click();
         DialogFixture dialog = window.dialog();
         dialog.textBox("firstName").setText("Luca");
         dialog.button(JButtonMatcher.withName("ok")).click();
-        testBook =((AddressBookGUI)window.target()).getAddressBookController().getModel();
-        assertEquals("Luca", testBook.get(0).getFirstName());
+        window.table().requireContents(new String[][] {{"lastname", "Luca", "address", "city" ,"state", "33965", "1234567890"}});
     }
+
+
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6})
     void testGetFieldValidVals(int num) {
@@ -236,6 +240,18 @@ class UnitTesting   {
         File testFile = new File("testFile2.java");
         assertThrows(FileNotFoundException.class, () -> testBookController.open(testFile));
     }
+    @DisplayName("Integration Test Save File")
+    @Test
+    void testSaveFile_FileSys() {
+        FileSystem fs = new FileSystem();
+        assertDoesNotThrow(() -> fs.saveFile(testBook, testFile));
+    }
+    @DisplayName("Integration Test Read File")
+    @Test
+    void testReadFile_FileSys() {
+        FileSystem fs = new FileSystem();
+        assertDoesNotThrow(() -> fs.readFile(testBook, testFile));
+    }
     @DisplayName("Test Person - Create with empty first name ")
     @Test
     void testPerson_FirstName_Empty() {
@@ -306,4 +322,6 @@ class UnitTesting   {
     void testPerson_getPhone(){
         assertEquals("1234567890", testPerson.getPhone());
     }
+
+
 }
