@@ -344,11 +344,11 @@ class UnitTesting {
 
     @Test
     void testPersonSet() {
-        Person testPerson2 = new Person("Tyler", "Marlow",
-                "601 East Tropical Way", "Plantation", "" +
-                "Florida", "33317", "9546217953");
-        testBook.set(0, testPerson2);
-        assertEquals(testPerson2, testBook.get(0));
+        String oldName = testBook.getValueAt(0, 1).toString();
+        testBook.set(0, new Person("Tyler", "Marlow",
+            "601 East Tropical Way", "Plantation", "" +
+            "Florida", "33317", "9546217953"));
+        assertNotEquals(oldName, (String) testBook.getValueAt(0, 1));
     }
 
     @Test
