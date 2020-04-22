@@ -153,6 +153,7 @@ public class PersonDialog extends JDialog {
                     phone.getText());
         } else {
             return null;
+
         }
     }
 }
