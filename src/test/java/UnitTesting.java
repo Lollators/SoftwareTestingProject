@@ -310,8 +310,8 @@ class UnitTesting {
         Person testPerson2 = new Person("Tyler", "Marlow",
                 "601 East Tropical Way", "Plantation", "" +
                 "Florida", "33317", "9546217953");
-        testBookController.set(0, testPerson2);
-        assertEquals("Tyler", testBook.getValueAt(0, 1));
+        testBook.set(0, testPerson2);
+        assertEquals(testPerson2, testBook.get(0));
     }
 
     @Test
