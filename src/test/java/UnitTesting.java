@@ -304,9 +304,8 @@ class UnitTesting {
         assertEquals(1, people.length);
     }
 
-    @DisplayName("Test Person - getPersons() ")
     @Test
-    void testPerson_set() {
+    void testPersonSet() {
         Person testPerson2 = new Person("Tyler", "Marlow",
                 "601 East Tropical Way", "Plantation", "" +
                 "Florida", "33317", "9546217953");
