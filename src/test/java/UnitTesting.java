@@ -394,21 +394,21 @@ class UnitTesting {
         assertThrows(FileNotFoundException.class, () -> testBookController.open(testFile));
     }
 
-    @DisplayName("Integration Test Save File")
+    @DisplayName("Test Save File")
     @Test
     void testSaveFile_FileSys() {
         FileSystem fs = new FileSystem();
         assertDoesNotThrow(() -> fs.saveFile(testBook, testFile));
     }
 
-    @DisplayName("Integration Test Read File")
+    @DisplayName("Test Read File")
     @Test
     void testReadFile_FileSys() {
         FileSystem fs = new FileSystem();
         assertDoesNotThrow(() -> fs.readFile(testBook, testFile));
     }
 
-    @DisplayName("Integration Test Read File not readable")
+    @DisplayName("Test Read File not readable")
     @Test
     void testReadFile_FileSys_unreadable_file() {
         FileSystem fs = new FileSystem();
