@@ -1,10 +1,6 @@
 import java.io.*;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-
 import AddressBook.*;
 import GUI.AddressBookGUI;
-import GUI.PersonDialog;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.DialogFixture;
@@ -80,6 +76,11 @@ class UnitTesting {
         window.table().requireRowCount(initialCount + 1);
     }
 
+    /*
+        Mimic the GUI process to add a person with an empty last name utilizing AssertJ.
+        In this case, no person should be added to the window table, thus the row count should still
+        equal the inital row count.
+     */
     @Test
     @DisplayName("Test putting in an empty last name in theAddressBookGUI add dialog - Unit test")
     public void testAddressBookGUI_Empty_Last_Add_Unit() {
@@ -96,6 +97,11 @@ class UnitTesting {
         window.table().requireRowCount(initialCount);
     }
 
+    /*
+        Mimic the GUI process to add a person with an empty first name utilizing AssertJ.
+        In this case, no person should be added to the window table, thus the row count should still
+        equal the inital row count.
+     */
     @Test
     @DisplayName("Test putting in an empty first name in theAddressBookGUI add dialog - Unit test")
     public void testAddressBookGUI_Empty_First_Add_Unit() {
@@ -112,9 +118,13 @@ class UnitTesting {
         window.table().requireRowCount(initialCount);
     }
 
-
+    /*
+        Mimic the GUI process to add a person with an invalid zipcode utilizing AssertJ.
+        In this case, no person should be added to the window table, thus the row count should still
+        equal the inital row count.
+     */
     @Test
-    @DisplayName("Test putting in an empty last name in theAddressBookGUI add dialog - Unit test")
+    @DisplayName("Test putting in wrong zipcode in theAddressBookGUI add dialog - Unit test")
     public void testAddressBookGUI_wrong_zip() {
         window.button("add").click();
         DialogFixture dialog = window.dialog();
@@ -129,8 +139,13 @@ class UnitTesting {
         window.table().requireRowCount(initialCount);
     }
 
+    /*
+        Mimic the GUI process to add a person with an invalid phone number utilizing AssertJ.
+        In this case, no person should be added to the window table, thus the row count should still
+        equal the inital row count.
+     */
     @Test
-    @DisplayName("Test putting in an empty last name in theAddressBookGUI add dialog - Unit test")
+    @DisplayName("Test putting an invalid phone number in theAddressBookGUI add dialog - Unit test")
     public void testAddressBookGUI_wrong_phone() {
         window.button("add").click();
         DialogFixture dialog = window.dialog();
@@ -145,6 +160,10 @@ class UnitTesting {
         window.table().requireRowCount(initialCount);
     }
 
+    /*
+        Mimic the GUI process to click on the add button of the window, then the cancel button
+        of the newly opened dialog. Ensure that no exceptions are thrown
+     */
     @Test
     @DisplayName("Test canceling out of AddressBookGUI add dialog - Unit test")
     public void testAddressBookGUI_Cancel_Add_Unit() {
@@ -183,6 +202,10 @@ class UnitTesting {
         window.table().requireContents(new String[][]{{"lastname", "Luca", "address", "city", "state", "33965", "1234567890"}});
     }
 
+    /*
+        Mimic the GUI process to click on the edit button of the window, then the cancel button
+        of the newly opened dialog. Ensure that no exceptions are thrown
+     */
     @Test
     @DisplayName("Test canceling out of AddressBookGUI edit dialog - Unit test")
     public void testAddressBookGUI_Cancel_Edit_Unit() {
