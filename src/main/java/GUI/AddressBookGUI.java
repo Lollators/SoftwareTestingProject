@@ -43,7 +43,9 @@ public class AddressBookGUI extends JFrame {
     private final JTextField searchTextField = new JTextField("");
     private File currentFile = null;
 
-
+    public AddressBookController getAddressBookController() {
+        return controller;
+    }
 
     public AddressBookGUI(AddressBookController controller, AddressBook addressBook) {
         // Set our local variables
