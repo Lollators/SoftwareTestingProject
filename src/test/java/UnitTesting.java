@@ -246,11 +246,12 @@ class UnitTesting {
     //This tests removes a person object entry from the address book
     @Test
     @DisplayName("Testing removing person")
-    void remove() {
+    void testAddressBookRemove() {
+
         //removes person at specified index
         testBookController.remove(0);
         //checks if the values are equal
-        assertEquals(0, testBook.getRowCount(), "Testing removing the person");
+        assertEquals(initialCount-1, testBook.getRowCount(), "Testing removing the person");
     }
 
     @Test
