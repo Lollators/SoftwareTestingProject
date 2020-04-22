@@ -25,7 +25,7 @@ class UnitTesting {
     Person testPerson = new Person("firstname", "lastname", "address",
             "city", "state", "33965", "1234567890");
     //another arbitrary person used to test
-    File testFile;
+    File testFile = new File("testFile.txt");
     public static FrameFixture window = null;
 
     //number of people in address book in the beginning
