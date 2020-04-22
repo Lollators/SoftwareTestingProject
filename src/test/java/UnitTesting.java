@@ -318,6 +318,7 @@ class UnitTesting {
         assertEquals(7, testBook.getColumnCount());
     }
 
+    //create a person with null first name
     @DisplayName("Test Person - Create with null first name ")
     @Test
     void testPerson_FirstName_Null() {
@@ -326,6 +327,7 @@ class UnitTesting {
                 "city", "state", "34112", "1234567890"));
     }
 
+    //create a person with null last name
     @DisplayName("Test Person - Create with null last name ")
     @Test
     void testPerson_LastName_Null() {
@@ -334,6 +336,7 @@ class UnitTesting {
                 "city", "state", "34112", "1234567890"));
     }
 
+    //get people array from the addressbook
     @DisplayName("Test Person - getPersons() ")
     @Test
     void testPerson_getPersons() {
@@ -342,6 +345,8 @@ class UnitTesting {
         assertEquals(1, people.length);
     }
 
+    //test editing information regarding a person in the addressbook (check with old value
+    //to ensure test passes)
     @Test
     void testPersonSet() {
         String oldName = testBook.getValueAt(0, 1).toString();
@@ -351,6 +356,7 @@ class UnitTesting {
         assertNotEquals(oldName, (String) testBook.getValueAt(0, 1));
     }
 
+    //test addressbook constructor
     @Test
     @DisplayName("Test the AddressBookController constructor with parameter ")
     void testAddressBookControllerConstructor() {
@@ -358,7 +364,7 @@ class UnitTesting {
         assertDoesNotThrow(() -> new AddressBookController(testBook));
     }
 
-
+    //clear out address book of any contact
     @Test
     @DisplayName("Test the AddressBookController clear function ")
     void testAddressBookControllerClear() {
@@ -367,6 +373,7 @@ class UnitTesting {
         assertEquals(0, testBook.getRowCount());
     }
 
+    //check that the addressbook can be exported to model - check its data for validation
     @Test
     @DisplayName("Test the AddressBookController getModel function ")
     void testAddressBookController_getModel() {
@@ -375,18 +382,21 @@ class UnitTesting {
         assertEquals(testBook.getValueAt(0, 1), test.getValueAt(0, 1));
     }
 
+    //test save function of the address book controller
     @DisplayName("Test the AddressBookController save function")
     @Test
     void testAddressBookControllerSaveFile() {
         assertDoesNotThrow(() -> testBookController.save(testFile));
     }
 
+    //test opening a file (importing data) into an addressbook
     @DisplayName("Test the AddressBookController open function")
     @Test
     void testReadFile() {
         assertDoesNotThrow(() -> testBookController.open(testFile));
     }
 
+    //test addressbook controller read file function when a file does not exist
     @DisplayName("Test the AddressBookController open function")
     @Test
     void testReadFile_notExisting() {
@@ -394,6 +404,7 @@ class UnitTesting {
         assertThrows(FileNotFoundException.class, () -> testBookController.open(testFile));
     }
 
+    //test Filesystem save file function
     @DisplayName("Test Save File")
     @Test
     void testSaveFile_FileSys() {
@@ -401,6 +412,7 @@ class UnitTesting {
         assertDoesNotThrow(() -> fs.saveFile(testBook, testFile));
     }
 
+    //test Filesystem read file function
     @DisplayName("Test Read File")
     @Test
     void testReadFile_FileSys() {
@@ -408,16 +420,20 @@ class UnitTesting {
         assertDoesNotThrow(() -> fs.readFile(testBook, testFile));
     }
 
+    //test Filesystem read file function when file is not readable
     @DisplayName("Test Read File not readable")
     @Test
     void testReadFile_FileSys_unreadable_file() {
         FileSystem fs = new FileSystem();
         File unreadableFile = mock(File.class);
+        //stub that file cannot be read
         when(unreadableFile.canRead()).thenReturn(false);
+        //stub that the file exists
         when(unreadableFile.exists()).thenReturn(true);
 
         assertThrows(FileNotFoundException.class, () -> fs.readFile(testBook, unreadableFile));    }
 
+    //create Person with empty first name
     @DisplayName("Test Person - Create with empty first name ")
     @Test
     void testPerson_FirstName_Empty() {
@@ -425,7 +441,7 @@ class UnitTesting {
                 "lastname", "address",
                 "city", "state", "34112", "1234567890"));
     }
-
+    //create Person with empty last name
     @DisplayName("Test Person - Create with empty last name")
     @Test
     void testPerson_LastName_Empty() {
@@ -434,6 +450,8 @@ class UnitTesting {
                 "city", "state", "34112", "1234567890"));
     }
 
+    //create Person with invalid zipcode - i.e. does not match regex pattern of
+    // 5 digits or 5 digits with extension (33965, or 33965-1123)
     @DisplayName("Test Person - Create with invalid zipcode")
     @Test
     void testPerson_InvalidZip() {
@@ -442,6 +460,7 @@ class UnitTesting {
                 "city", "state", "zip", "1234567890"));
     }
 
+    //create Person with invalid zipcode - i.e. does not match regex pattern defined in Person's class
     @DisplayName("Test Person - Create with invalid phone number")
     @Test
     void testPerson_InvalidPhone() {
@@ -450,6 +469,7 @@ class UnitTesting {
                 "city", "state", "33965", "phone"));
     }
 
+    //test the search function of Person, this returns the field when the string matches one of its fields
     @DisplayName("Test person contains method")
     @Test
     void testPerson_contains() {
@@ -458,6 +478,7 @@ class UnitTesting {
         }
     }
 
+    //get an invalid field of a Person object
     @DisplayName("Test getField method with invalid index")
     @Test
     void testPerson_getField_Invalid() {
@@ -500,6 +521,7 @@ class UnitTesting {
         assertEquals("1234567890", testPerson.getPhone());
     }
 
+    //test clearing an addressbook that's already empty
     @Test
     void addressBook_clear_empty_AddressBook() {
         testBook.clear();
