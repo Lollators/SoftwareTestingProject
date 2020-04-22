@@ -58,6 +58,12 @@ class UnitTesting {
         window.cleanUp();
     }
 
+    /*
+        Mimic the GUI process to add a person utilizing AssertJ. In order to properly test
+        utilize the inital count of rows present in the GUI table, and compare it to the new
+        rowCount. If everything went through, it should be initialCount + 1 (for the newly added
+        person.
+     */
     @Test
     @DisplayName("Test AddressBookGUI add function - Unit test")
     public void testAddressBookGUI_Add_Unit() {
@@ -147,6 +153,13 @@ class UnitTesting {
         assertDoesNotThrow(() -> dialog.button(JButtonMatcher.withName("cancel")).click());
     }
 
+
+    /*
+        Mimic the GUI process to delete a person utilizing AssertJ. In order to properly test
+        utilize the inital count of rows present in the GUI table, and compare it to the new
+        rowCount. If everything went through, it should be initialCount - 1 (to reflect the person
+        that has been removed.
+    */
     @Test
     @DisplayName("Test AddressBookGUI remove function - Unit test")
     public void testAddressBookGUI_Remove_Unit() {
@@ -155,7 +168,10 @@ class UnitTesting {
         window.table().requireRowCount(initialCount - 1);
     }
 
-
+    /*
+       Mimic the GUI process to edit a person utilizing AssertJ. In order to properly test check
+       that there is a row containing the newly edited data in the GUI table.
+    */
     @Test
     @DisplayName("Test AddressBookGUI edit function - Unit test")
     public void testAddressBookGUI_Edit_Unit() {
