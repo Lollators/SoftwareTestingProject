@@ -56,7 +56,7 @@ class UnitTesting {
 
     /*
         Mimic the GUI process to add a person utilizing AssertJ. In order to properly test
-        utilize the inital count of rows present in the GUI table, and compare it to the new
+        utilize the initial count of rows present in the GUI table, and compare it to the new
         rowCount. If everything went through, it should be initialCount + 1 (for the newly added
         person.
      */
@@ -214,7 +214,6 @@ class UnitTesting {
         DialogFixture dialog = window.dialog();
         assertDoesNotThrow(() -> dialog.button(JButtonMatcher.withName("cancel")).click());
     }
-
 
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 2, 3, 4, 5, 6})
