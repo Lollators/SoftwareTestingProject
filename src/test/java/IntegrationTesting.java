@@ -29,7 +29,7 @@ public class IntegrationTesting {
     @Mock
     AddressBookController mockAddressBookController;
 
-    //AjjertJ window used for testing the GUI.
+    //AssertJ window used for testing the GUI.
     public static FrameFixture window = null;
 
     //number of people in address book in the beginning

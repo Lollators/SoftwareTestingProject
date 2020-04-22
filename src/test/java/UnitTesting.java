@@ -287,7 +287,7 @@ class UnitTesting {
     void testAddressBookRemove() {
 
         //removes person at specified index
-        testBookController.remove(0);
+        testBook.remove(0);
         //checks if the values are equal
         assertEquals(initialCount-1, testBook.getRowCount(), "Testing removing the person");
     }
