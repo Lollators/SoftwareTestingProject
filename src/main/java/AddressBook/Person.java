@@ -62,13 +62,11 @@ public class Person {
         if (zip.matches(zipcodePattern))
             this.zip = zip;
         else {
-            this.zip = "";
             throw new IllegalArgumentException("Invalid zipcode entered");
         }
         if (phone.matches(phonePattern))
             this.phone = phone;
         else {
-            this.phone = "";
             throw new IllegalArgumentException("Invalid phone number entered");
         }
     }

@@ -398,4 +398,22 @@ public class IntegrationTesting {
         assertEquals(initialCount + 1, addressBook.getRowCount());
     }
 
+    @Test
+    @DisplayName("Add person then edit with wrong values")
+    public void add_editPerson() {
+        String personZip = addressBook.get(0).getZip();
+        window.table().cell("firstname").click();
+        window.button("edit").click();
+
+        //gets dialog and inserts values into text nw value into first name text box
+        DialogFixture dialog = window.dialog();
+        dialog.textBox("zip").setText("wwwwwww");
+
+        //clicks dialog ok button
+        dialog.button(JButtonMatcher.withName("ok")).click();
+
+        //assumes name in address book has changed
+        assertEquals(personZip, addressBook.get(0).getZip());
+    }
+
 }

@@ -193,7 +193,11 @@ public class AddressBookGUI extends JFrame {
             if (dialog.showDialog() != PersonDialog.Result.OK) {
                 return;
             }
-            controller.set(index, dialog.getPerson());
+            if(dialog.getPerson() == null){
+                controller.set(index, oldPerson);
+            } else {
+                controller.set(index, dialog.getPerson());
+            }
             saveItem.setEnabled(true);
         });
         addEditDelPanel.add(editButton);
