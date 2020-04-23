@@ -201,22 +201,6 @@ public class IntegrationTesting {
     }
 
     @Test
-    @DisplayName("Test putting in a null last name in theAddressBookGUI add dialog")
-    public void testAddressBookGUI_Null_Last_Add() {
-        window.button("add").click();
-        DialogFixture dialog = window.dialog();
-        dialog.textBox("firstName").setText("Jordin");
-        dialog.textBox("lastName").setText(null);
-        dialog.textBox("address").setText("525 street drive");
-        dialog.textBox("city").setText("Naples");
-        dialog.textBox("state").setText("Florida");
-        dialog.textBox("zip").setText("34112");
-        dialog.textBox("phone").setText("2395721111");
-        dialog.button(JButtonMatcher.withName("ok")).click();
-        assertEquals( initialCount, addressBook.getRowCount());
-    }
-
-    @Test
     @DisplayName("Test putting in an empty last name in theAddressBookGUI add dialog")
     public void testAddressBookGUI_Empty_First_Add() {
         window.button("add").click();
