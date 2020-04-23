@@ -67,7 +67,9 @@ public class AddressBook extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int row, int column) {
-        return persons.get(row).getField(column);
+        if (!persons.isEmpty())
+            return persons.get(row).getField(column);
+        return null;
     }
 
    

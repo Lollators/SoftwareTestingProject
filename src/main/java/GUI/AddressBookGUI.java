@@ -43,8 +43,8 @@ public class AddressBookGUI extends JFrame {
     private final JTextField searchTextField = new JTextField("");
     private File currentFile = null;
 
-    public AddressBookController getAddressBookController() {
-        return controller;
+    public File getCurrentFile() {
+        return currentFile;
     }
 
     public AddressBookGUI(AddressBookController controller, AddressBook addressBook) {
@@ -64,6 +64,7 @@ public class AddressBookGUI extends JFrame {
         JMenu file = new JMenu("File");
         file.setName("file");
         file.setMnemonic('F');
+        newItem.setName("new");
         newItem.addActionListener(e ->
         {
             if (saveItem.isEnabled() && JOptionPane.YES_OPTION != JOptionPane.showConfirmDialog(this, "Are you sure you want to create a new address book? Any unsaved progress will be lost.", "New Address Book", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)) {

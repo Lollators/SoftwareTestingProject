@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import java.io.File;
 import static org.junit.jupiter.api.Assertions.*;
+
 public class IntegrationTesting {
 
     //an arbitrary file used to test the file system
@@ -183,5 +184,218 @@ public class IntegrationTesting {
         assertEquals( initialCount+1, addressBook.getRowCount());
     }
 
+    @Test
+    @DisplayName("Test putting in an empty last name in theAddressBookGUI add dialog")
+    public void testAddressBookGUI_Empty_Last_Add() {
+        window.button("add").click();
+        DialogFixture dialog = window.dialog();
+        dialog.textBox("firstName").setText("Jordin");
+        dialog.textBox("lastName").setText("");
+        dialog.textBox("address").setText("525 street drive");
+        dialog.textBox("city").setText("Naples");
+        dialog.textBox("state").setText("Florida");
+        dialog.textBox("zip").setText("34112");
+        dialog.textBox("phone").setText("2395721111");
+        dialog.button(JButtonMatcher.withName("ok")).click();
+        assertEquals( initialCount, addressBook.getRowCount());
+    }
+
+    @Test
+    @DisplayName("Test putting in a null last name in theAddressBookGUI add dialog")
+    public void testAddressBookGUI_Null_Last_Add() {
+        window.button("add").click();
+        DialogFixture dialog = window.dialog();
+        dialog.textBox("firstName").setText("Jordin");
+        dialog.textBox("lastName").setText(null);
+        dialog.textBox("address").setText("525 street drive");
+        dialog.textBox("city").setText("Naples");
+        dialog.textBox("state").setText("Florida");
+        dialog.textBox("zip").setText("34112");
+        dialog.textBox("phone").setText("2395721111");
+        dialog.button(JButtonMatcher.withName("ok")).click();
+        assertEquals( initialCount, addressBook.getRowCount());
+    }
+
+    @Test
+    @DisplayName("Test putting in an empty last name in theAddressBookGUI add dialog")
+    public void testAddressBookGUI_Empty_First_Add() {
+        window.button("add").click();
+        DialogFixture dialog = window.dialog();
+        dialog.textBox("firstName").setText("");
+        dialog.textBox("lastName").setText("Medina");
+        dialog.textBox("address").setText("525 street drive");
+        dialog.textBox("city").setText("Naples");
+        dialog.textBox("state").setText("Florida");
+        dialog.textBox("zip").setText("34112");
+        dialog.textBox("phone").setText("2395721111");
+        dialog.button(JButtonMatcher.withName("ok")).click();
+        assertEquals( initialCount, addressBook.getRowCount());
+    }
+
+    @Test
+    @DisplayName("Test putting in a null first name in theAddressBookGUI add dialog")
+    public void testAddressBookGUI_Null_First_Add() {
+        window.button("add").click();
+        DialogFixture dialog = window.dialog();
+        dialog.textBox("firstName").setText(null);
+        dialog.textBox("lastName").setText("Medina");
+        dialog.textBox("address").setText("525 street drive");
+        dialog.textBox("city").setText("Naples");
+        dialog.textBox("state").setText("Florida");
+        dialog.textBox("zip").setText("34112");
+        dialog.textBox("phone").setText("2395721111");
+        dialog.button(JButtonMatcher.withName("ok")).click();
+        assertEquals( initialCount, addressBook.getRowCount());
+    }
+
+    @Test
+    @DisplayName("Test putting in a invalid zip in theAddressBookGUI add dialog")
+    public void testAddressBookGUI_Empty_Zip_Add() {
+        window.button("add").click();
+        DialogFixture dialog = window.dialog();
+        dialog.textBox("firstName").setText("Jordin");
+        dialog.textBox("lastName").setText("Medina");
+        dialog.textBox("address").setText("525 street drive");
+        dialog.textBox("city").setText("Naples");
+        dialog.textBox("state").setText("Florida");
+        dialog.textBox("zip").setText("zip");
+        dialog.textBox("phone").setText("2395721111");
+        dialog.button(JButtonMatcher.withName("ok")).click();
+        assertEquals( initialCount, addressBook.getRowCount());
+    }
+
+    @Test
+    @DisplayName("Test putting in a invalid phone in theAddressBookGUI add dialog")
+    public void testAddressBookGUI_Empty_Phone_Add() {
+        window.button("add").click();
+        DialogFixture dialog = window.dialog();
+        dialog.textBox("firstName").setText("Jordin");
+        dialog.textBox("lastName").setText("Medina");
+        dialog.textBox("address").setText("525 street drive");
+        dialog.textBox("city").setText("Naples");
+        dialog.textBox("state").setText("Florida");
+        dialog.textBox("zip").setText("34112");
+        dialog.textBox("phone").setText("phone");
+        dialog.button(JButtonMatcher.withName("ok")).click();
+        assertEquals( initialCount, addressBook.getRowCount());
+    }
+
+    //test the search function of Person, this returns the field when the string matches one of its fields
+    @DisplayName("Test person contains method")
+    @Test
+    void testPerson_contains() {
+        for (int i = 0; i < 7; i++) {
+            assertEquals(true, addressBook.get(0).containsString(testPerson.getField(i)));
+        }
+    }
+
+    //create an invalid person through the controller - empty firstname
+    @Test
+    @DisplayName("Test controller creation of a person with empty first name")
+    public void testAddressBookGUI_Controller_Add_emptyFirstName() {
+        assertThrows(IllegalArgumentException.class, () ->  mockAddressBookController.add(new Person("",
+            "lastname", "address",
+            "city", "state", "33965", "1234567890")));
+    }
+
+    //create an invalid person through the controller - empty lastname
+    @Test
+    @DisplayName("Test controller creation of a person with empty lastname")
+    public void testAddressBookGUI_Controller_Add_emptyLastName() {
+        assertThrows(IllegalArgumentException.class, () ->  mockAddressBookController.add(new Person("firstname",
+            "", "address",
+            "city", "state", "33965", "1234567890")));
+    }
+
+    //create an invalid person through the controller - null first name
+    @Test
+    @DisplayName("Test controller creation of a person with null first name")
+    public void testAddressBookGUI_Controller_Add_nullFirstName() {
+        assertThrows(IllegalArgumentException.class, () ->  mockAddressBookController.add(new Person(null,
+            "lastname", "address",
+            "city", "state", "33965", "1234567890")));
+    }
+
+    //create an invalid person through the controller - null last name
+    @Test
+    @DisplayName("Test controller creation of a person with null last name")
+    public void testAddressBookGUI_Controller_Add_nullLastName() {
+        assertThrows(IllegalArgumentException.class, () ->  mockAddressBookController.add(new Person("firstname",
+            null, "address",
+            "city", "state", "33965", "1234567890")));
+    }
+
+    //create an invalid person through the controller - invalid zip
+    @Test
+    @DisplayName("Test controller creation of a person with invalid zip")
+    public void testAddressBookGUI_Controller_Add_invalidZip() {
+        assertThrows(IllegalArgumentException.class, () ->  mockAddressBookController.add(new Person("firstname",
+            "lastname", "address",
+            "city", "state", "zip", "1234567890")));
+    }
+
+    //create an invalid person through the controller - invalid phone number
+    @Test
+    @DisplayName("Test controller creation of a person with invalid phone")
+    public void testAddressBookGUI_Controller_Add_invalidPhone() {
+        assertThrows(IllegalArgumentException.class, () ->  mockAddressBookController.add(new Person("firstname",
+            "lastname", "address",
+            "city", "state", "33965", "phone")));
+    }
+
+    //create new addressbook and hit yes to replace the current one
+    @Test
+    @DisplayName("New AddressBook")
+    public void newAddressBook_Yes() {
+        //clicks add button
+        window.button("add").click();
+        //gets dialog and inserts values into text boxes
+        DialogFixture dialog = window.dialog();
+        dialog.textBox("firstName").setText("Jordin");
+        dialog.textBox("lastName").setText("Medina");
+        dialog.textBox("address").setText("525 street drive");
+        dialog.textBox("city").setText("Naples");
+        dialog.textBox("state").setText("Florida");
+        dialog.textBox("zip").setText("34112");
+        dialog.textBox("phone").setText("2395721111");
+        //clicks dialog ok button
+        dialog.button(JButtonMatcher.withName("ok")).click();
+
+        window.menuItem("file").click();
+        window.menuItem("new").click();
+
+        //gets dialog and inserts values into text boxes
+        dialog = window.dialog();
+        dialog.button(JButtonMatcher.withText("Yes")).click();
+
+    }
+
+    //create new address book - hit cancel
+    @Test
+    @DisplayName("New Addressbook - cancel")
+    public void newAddressBook_No() {
+        //clicks add button
+        window.button("add").click();
+        //gets dialog and inserts values into text boxes
+        DialogFixture dialog = window.dialog();
+        dialog.textBox("firstName").setText("Jordin");
+        dialog.textBox("lastName").setText("Medina");
+        dialog.textBox("address").setText("525 street drive");
+        dialog.textBox("city").setText("Naples");
+        dialog.textBox("state").setText("Florida");
+        dialog.textBox("zip").setText("34112");
+        dialog.textBox("phone").setText("2395721111");
+        //clicks dialog ok button
+        dialog.button(JButtonMatcher.withName("ok")).click();
+
+
+        window.menuItem("file").click();
+        window.menuItem("new").click();
+
+        //gets dialog and inserts values into text boxes
+        dialog = window.dialog();
+        dialog.button(JButtonMatcher.withText("No")).click();
+        assertEquals(initialCount + 1, addressBook.getRowCount());
+    }
 
 }

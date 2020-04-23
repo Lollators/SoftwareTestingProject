@@ -1,3 +1,4 @@
+import GUI.PersonDialog;
 import java.io.*;
 import AddressBook.*;
 import GUI.AddressBookGUI;
@@ -200,6 +201,32 @@ class UnitTesting {
         dialog.textBox("firstName").setText("Luca");
         dialog.button(JButtonMatcher.withName("ok")).click();
         window.table().requireContents(new String[][]{{"lastname", "Luca", "address", "city", "state", "33965", "1234567890"}});
+    }
+
+    /*
+       Mimic the GUI process to edit a person utilizing AssertJ.
+    */
+    @Test
+    @DisplayName("Test AddressBookGUI edit function without a selection - Unit test")
+    public void testAddressBookGUI_Edit_Unit_noSelection() {
+        window.button("edit").click();
+        window.button("edit").requireFocused();
+    }
+
+    @Test
+    @DisplayName("Test AddressBookGUI save being disabled")
+    public void testAddressBookGUI_save_disabled() {
+        window.menuItem("save").requireDisabled();
+    }
+
+    /*
+       Mimic the GUI process to remove a person utilizing AssertJ.
+    */
+    @Test
+    @DisplayName("Test AddressBookGUI remove function without a selection - Unit test")
+    public void testAddressBookGUI_remove_Unit_noSelection() {
+        window.button("delete").click();
+        window.button("delete").requireFocused();
     }
 
     /*
@@ -527,6 +554,12 @@ class UnitTesting {
         testBook.clear();
 
         assertDoesNotThrow(() -> testBook.clear());
+    }
+
+    //test clearing an addressbook that's already empty
+    @Test
+    void persondialogNull() {
+        assertDoesNotThrow(() -> new PersonDialog(window.target(), null));
     }
 
 }
